@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# © Copyright 2022, Rapper_skull@SamyGO
+#
+#
+. /dtv/SGO.env
+
+SODIR=$SYSROOT/opt/privateer/usr/libso
+
+stop_bootloop()
+{
+	for USB in /dtv/usb/sd* ; do
+		echo "checking $USB"
+		[ -e $USB/STOP ] && echo "STOP found. Script exit..." && exit 1
+	done
+}
+
+case $1 in 
+	start)
+	stop_bootloop
+	[ "$LIBSO_DIR" ] && SODIR=$LIBSO_DIR
+  # Not tested beyond C series. Probably it doesn't work!
+	[ $(pidof exeTV exeDSP) ] && samyGOso -r -d -A -B -l $SODIR/lib288pSupport.so
+	;;
+	stop)
+	;;
+	status)
+	[ -f "/dtv/288pSupport.log" ] && cat "/dtv/288pSupport.log" || echo "Not started"
+	;;
+	*)
+	echo "Usage: $0 {start|stop|status}" 1>&2
+	exit 0
+	;;
+esac

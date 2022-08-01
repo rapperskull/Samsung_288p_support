@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Out folders
+out-*
+
+# VS Code
+.vscode
